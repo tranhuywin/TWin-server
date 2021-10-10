@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { PhoneModule } from './phone/phone.module';
+import { PhoneModule } from './phones/phones.module';
 import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
-import DatabaseModule from './database/database.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [DatabaseModule, PhoneModule, UserModule],
+  imports: [TypeOrmModule.forRoot(), PhoneModule, UserModule],
   controllers: [UserController],
-})
+}) 
 export class AppModule {}
