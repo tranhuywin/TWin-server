@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { PhonesService } from './phones.service';
 import { CreatePhoneDto } from './dto/create-phone.dto';
 import { Phone } from './entitys/phone.entity';
+import { UpdatePhoneDto } from './dto/update-phone';
 
 @Controller('phones')
 export class PhonesController {
@@ -22,8 +23,22 @@ export class PhonesController {
         return this.phonesService.getbyid(idPhone);
     }
 
+    @Put('/id/:idPhone')
+    updatebyidPhone(
+        @Param('idPhone') idPhone: string,
+        @Body() updatePhoneDto: UpdatePhoneDto
+    ): Promise<Phone> {
+        return this.phonesService.updatebyidPhone(idPhone, updatePhoneDto);
+    }
+    
+    @Delete('/id/:idPhone')
+    deletePhone(@Param('idPhone') idPhone: string): Promise<any> {
+        return this.phonesService.detelebyidPhone(idPhone);
+    }
+
     @Get('/brand/:brand')
-    getbyBrand(@Param('brand') brand: string): Promise<Phone[]>{
+    getbyBrand(@Param('brand') brand: string): Promise<Phone[]> {
         return this.phonesService.getbyBrand(brand);
     }
+
 }

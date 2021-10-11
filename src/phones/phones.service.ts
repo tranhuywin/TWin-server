@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Phone } from './entitys/phone.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { CreatePhoneDto } from './dto/create-phone.dto';
 import { Specifications } from './entitys/specification.entity';
 import { Color } from './entitys/color.entity';
+import { UpdatePhoneDto } from './dto/update-phone';
 
 @Injectable()
 export class PhonesService {
@@ -62,7 +63,7 @@ export class PhonesService {
             .createQueryBuilder('phone')
             .leftJoinAndSelect("phone.color", 'color')
             .leftJoinAndSelect("phone.specifications", 'specification')
-            .where("phone.id = :id", {id : id})
+            .where("phone.id = :id", { id: id })
             .getOne();
 
         if (!phone)
@@ -76,7 +77,7 @@ export class PhonesService {
             .createQueryBuilder('phone')
             .leftJoinAndSelect("phone.color", 'color')
             .leftJoinAndSelect("phone.specifications", 'specification')
-            .where("phone.brand = :brand", {brand : brand})
+            .where("phone.brand = :brand", { brand: brand })
             .getMany();
 
         if (!phone)
@@ -85,4 +86,26 @@ export class PhonesService {
         return phone;
     }
 
+    async updatebyidPhone(id: string, updatePhoneDto: UpdatePhoneDto): Promise<Phone> {
+        const updateData = await this.phonesRepository
+            .createQueryBuilder()
+            .update(Phone)
+            .set(updatePhoneDto)
+            .where('id = :id', { id: id })
+            .execute()
+
+        if(!updateData.affected) {
+            throw new BadRequestException;
+        }
+        return this.getbyid(id);
+    }
+
+    async detelebyidPhone(id: string): Promise<DeleteResult>{
+        const deleteData = await this.phonesRepository.delete(id);
+        
+        if(!deleteData.affected) {
+            throw new BadRequestException;
+        }
+        return deleteData;
+    }
 }
