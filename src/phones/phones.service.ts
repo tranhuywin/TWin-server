@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Phone } from './entitys/phones.entity';
+import { Phone } from './entitys/phone.entity';
 import { Repository } from 'typeorm';
 import { CreatePhoneDto } from './dto/create-phone.dto';
 import { Specifications } from './entitys/specification.entity';
@@ -38,7 +38,7 @@ export class PhonesService {
         specificationsOfPhone.screen_info = createPhoneDto.specifications.screen_info;
         phone.specifications = specificationsOfPhone;
 
-        createPhoneDto.colors.map(async(color) => {
+        createPhoneDto.colors.map(async (color) => {
             const colors = new Color();
             colors.color = color.color;
             colors.extra_price = color.extra_price;
@@ -53,29 +53,36 @@ export class PhonesService {
         return await this.phonesRepository.save(phone);
     }
 
-    async getAll():Promise<Phone[]>{
+    async getAll(): Promise<Phone[]> {
         return await this.phonesRepository.find();
     }
 
-    async getbyid(id:string):Promise<Phone>{
-        const phone = await this.phonesRepository.find({
-            where: {id:id},
-            take: 1
-        });
-        if(!phone.length)
-            throw new NotFoundException();
-        
-        return phone[0];
-    }
+    async getbyid(id: string): Promise<Phone> {
+        const phone = await this.phonesRepository
+            .createQueryBuilder('phone')
+            .leftJoinAndSelect("phone.color", 'color')
+            .leftJoinAndSelect("phone.specifications", 'specification')
+            .where("phone.id = :id", {id : id})
+            .getOne();
 
-    async getbyBrand(brand:string): Promise<Phone[]> {
-        const phone = await this.phonesRepository.find({
-            where: {brand:brand},
-        });
-        if(!phone.length)
+        if (!phone)
             throw new NotFoundException();
-        
-            console.log(phone[0]);
+
         return phone;
     }
+
+    async getbyBrand(brand: string): Promise<Phone[]> {
+        const phone = await this.phonesRepository
+            .createQueryBuilder('phone')
+            .leftJoinAndSelect("phone.color", 'color')
+            .leftJoinAndSelect("phone.specifications", 'specification')
+            .where("phone.brand = :brand", {brand : brand})
+            .getMany();
+
+        if (!phone)
+            throw new NotFoundException();
+
+        return phone;
+    }
+
 }

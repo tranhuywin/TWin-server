@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { Phone } from './phones.entity';
+import { Phone } from './phone.entity';
 
 @Entity()
 export class Color {
