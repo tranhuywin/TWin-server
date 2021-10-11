@@ -13,7 +13,7 @@ $ npm install
 ```bash
 # development
 $ npm run dev
-
+```
 ## Technical
  - [TypeORM](https://typeorm.io/) is definitely the most mature Object Relational Mapper (ORM) available in the node.js world.
  - [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
