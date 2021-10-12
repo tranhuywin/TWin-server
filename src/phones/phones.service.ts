@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Phone } from './entitys/phone.entity';
+import { Phone } from './entities/phone.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreatePhoneDto } from './dto/create-phone.dto';
-import { Specifications } from './entitys/specification.entity';
-import { Color } from './entitys/color.entity';
+import { Specifications } from './entities/specification.entity';
+import { Color } from './entities/color.entity';
 import { UpdatePhoneDto } from './dto/update-phone.dto';
 import { SortPhoneDto } from './dto/sort-phone.dto';
 
