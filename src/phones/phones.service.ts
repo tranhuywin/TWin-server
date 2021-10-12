@@ -5,7 +5,8 @@ import { DeleteResult, Repository } from 'typeorm';
 import { CreatePhoneDto } from './dto/create-phone.dto';
 import { Specifications } from './entitys/specification.entity';
 import { Color } from './entitys/color.entity';
-import { UpdatePhoneDto } from './dto/update-phone';
+import { UpdatePhoneDto } from './dto/update-phone.dto';
+import { SortPhoneDto } from './dto/sort-phone.dto';
 
 @Injectable()
 export class PhonesService {
@@ -55,7 +56,16 @@ export class PhonesService {
     }
 
     async getAll(): Promise<Phone[]> {
-        return await this.phonesRepository.find();
+        const phone = await this.phonesRepository
+            .createQueryBuilder('phone')
+            .leftJoinAndSelect("phone.color", 'color')
+            .leftJoinAndSelect("phone.specifications", 'specification')
+            .getMany();
+
+        if (!phone)
+            throw new NotFoundException();
+
+        return phone;
     }
 
     async getbyid(id: string): Promise<Phone> {
@@ -94,18 +104,45 @@ export class PhonesService {
             .where('id = :id', { id: id })
             .execute()
 
-        if(!updateData.affected) {
+        if (!updateData.affected) {
             throw new BadRequestException;
         }
         return this.getbyid(id);
     }
 
-    async detelebyidPhone(id: string): Promise<DeleteResult>{
+    async detelebyidPhone(id: string): Promise<{ status: string }> {
         const deleteData = await this.phonesRepository.delete(id);
-        
-        if(!deleteData.affected) {
+
+        if (!deleteData.affected) {
             throw new BadRequestException;
         }
-        return deleteData;
+        return { status: 'success' };
+    }
+
+    sortPrice(sort: string, phones: Phone[]) {
+        if (sort === 'asc')  //increase
+        {
+            phones.sort((a, b) => a.price - b.price)
+        }
+        else if (sort === 'desc') //decrease
+        {
+            phones.sort((a, b) => b.price - a.price)
+        }
+        else
+            throw new BadRequestException();
+        return phones;
+    }
+
+    getMinPrice(minPrice: number, phones: Phone[]): Phone[] {
+        return phones.filter(phone => {
+            if (phone.price >= minPrice)
+                return phone;
+        })
+    }
+    getMaxPrice(maxPrice: number, phones: Phone[]): Phone[] {
+        return phones.filter(phone => {
+            if (phone.price <= maxPrice)
+                return phone;
+        })
     }
 }
