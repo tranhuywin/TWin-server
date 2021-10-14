@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, OneToOne, OneToMany } from 'typeorm';
-import { Color } from './color.entity';
+import { Memory } from './memory.entity';
 import { Specifications } from './specification.entity';
 
 @Entity()
@@ -20,12 +20,6 @@ export class Phone {
   image: string;
 
   @Column()
-  RAM: number;
-
-  @Column()
-  ROM: number;
-
-  @Column()
   quantity: number;
 
   @Column()
@@ -35,6 +29,6 @@ export class Phone {
   @JoinColumn()
   specifications: Specifications;
 
-  @OneToMany(() =>Color, color => color.phone)
-  color: Color[];
+  @OneToMany(() =>Memory, memory => memory.phone)
+  memory: Memory[];
 }

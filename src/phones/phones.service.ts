@@ -1,12 +1,13 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Phone } from './entities/phone.entity';
-import { DeleteResult, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreatePhoneDto } from './dto/create-phone.dto';
 import { Specifications } from './entities/specification.entity';
 import { Color } from './entities/color.entity';
 import { UpdatePhoneDto } from './dto/update-phone.dto';
 import { SortPhoneDto } from './dto/sort-phone.dto';
+import { Memory } from './entities/memory.entity';
 
 @Injectable()
 export class PhonesService {
@@ -17,6 +18,8 @@ export class PhonesService {
         private readonly SpecificationsRepository: Repository<Specifications>,
         @InjectRepository(Color)
         private readonly colorsRepository: Repository<Color>,
+        @InjectRepository(Memory)
+        private readonly memoriesRepository: Repository<Memory>,
     ) { }
 
     async create(createPhoneDto: CreatePhoneDto): Promise<Phone> {
@@ -28,9 +31,16 @@ export class PhonesService {
         phone.image = createPhoneDto.image;
         phone.name = createPhoneDto.name;
         phone.quantity = createPhoneDto.quantity;
-        phone.RAM = createPhoneDto.RAM;
-        phone.ROM = createPhoneDto.ROM;
-        phone.price = createPhoneDto.price;
+
+        //get all price of memory
+        const prices: number[] = createPhoneDto.memory.flatMap(memory => {
+            const priceofcolor = memory.color.map(color =>{
+                return color.price;
+            });
+            return priceofcolor;
+        });
+        // min price of memory for phone
+        phone.price = Math.min(...prices);
 
         const specificationsOfPhone = new Specifications();
         specificationsOfPhone.CPU = createPhoneDto.specifications.CPU;
@@ -40,16 +50,25 @@ export class PhonesService {
         specificationsOfPhone.screen_info = createPhoneDto.specifications.screen_info;
         phone.specifications = specificationsOfPhone;
 
-        createPhoneDto.colors.map(async (color) => {
-            const colors = new Color();
-            colors.color = color.color;
-            colors.extra_price = color.extra_price;
+        //memory
+        const memories = createPhoneDto.memory.map(memoryofPhone => {
+            const memory = new Memory();
+            memory.Ram = memoryofPhone.Ram;
+            memory.Rom = memoryofPhone.Rom;
 
-            if (!phone.color)
-                phone.color = [];
-            phone.color.push(colors);
-            await this.colorsRepository.save(colors);
+            //color
+            memoryofPhone.color.map(async colorofPhone => {
+                const color = new Color();
+                color.HexRGB = colorofPhone.HexRGB;
+                color.price = colorofPhone.price;
+                color.memory = memory;
+                await this.colorsRepository.save(color);
+            })
+            return memory;
         })
+        //color
+
+        await this.memoriesRepository.save(memories);
 
         await this.SpecificationsRepository.save(specificationsOfPhone);
         return await this.phonesRepository.save(phone);

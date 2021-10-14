@@ -16,19 +16,7 @@ export class CreatePhoneDto {
 
     @IsNumber()
     @Min(0)
-    RAM: number;
-
-    @IsNumber()
-    @Min(0)
-    ROM: number;
-
-    @IsNumber()
-    @Min(0)
     quantity: number;
-
-    @IsNumber()
-    @Min(0)
-    price: number;
 
     @IsObject()
     specifications: {
@@ -40,8 +28,12 @@ export class CreatePhoneDto {
     };
     
     @IsArray()
-    colors: [{ 
-        color: string, 
-        extra_price: number 
+    memory: [{ 
+        Ram: number;
+        Rom: number;
+        color: [{
+            HexRGB: string;
+            price: number;
+        }], 
     }]
 }

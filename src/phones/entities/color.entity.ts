@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { Phone } from './phone.entity';
+import { Memory } from './memory.entity';
 
 @Entity()
 export class Color {
@@ -7,11 +7,11 @@ export class Color {
     id: number;
 
     @Column()
-    color: string;
+    HexRGB: string;
 
     @Column()
-    extra_price: number;
+    price: number;
 
-    @ManyToOne(() => Phone, phone => phone.color)
-    phone: Phone;
+    @ManyToOne(() => Memory, memory => memory.color)
+    memory: Memory;
 }
