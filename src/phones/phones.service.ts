@@ -77,7 +77,7 @@ export class PhonesService {
     async getAll(): Promise<Phone[]> {
         const phone = await this.phonesRepository
             .createQueryBuilder('phone')
-            .leftJoinAndSelect("phone.color", 'color')
+            .leftJoinAndSelect("phone.memory", 'memory')
             .leftJoinAndSelect("phone.specifications", 'specification')
             .getMany();
 
@@ -90,7 +90,7 @@ export class PhonesService {
     async getbyid(id: string): Promise<Phone> {
         const phone = await this.phonesRepository
             .createQueryBuilder('phone')
-            .leftJoinAndSelect("phone.color", 'color')
+            .leftJoinAndSelect("phone.memory", 'memory')
             .leftJoinAndSelect("phone.specifications", 'specification')
             .where("phone.id = :id", { id: id })
             .getOne();
@@ -104,7 +104,7 @@ export class PhonesService {
     async getbyBrand(brand: string): Promise<Phone[]> {
         const phone = await this.phonesRepository
             .createQueryBuilder('phone')
-            .leftJoinAndSelect("phone.color", 'color')
+            .leftJoinAndSelect("phone.memory", 'memory')
             .leftJoinAndSelect("phone.specifications", 'specification')
             .where("phone.brand = :brand", { brand: brand })
             .getMany();
