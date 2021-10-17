@@ -6,7 +6,6 @@ import { CreatePhoneDto } from './dto/create-phone.dto';
 import { Specifications } from './entities/specification.entity';
 import { Color } from './entities/color.entity';
 import { UpdatePhoneDto } from './dto/update-phone.dto';
-import { SortPhoneDto } from './dto/sort-phone.dto';
 import { Memory } from './entities/memory.entity';
 
 @Injectable()
@@ -34,7 +33,7 @@ export class PhonesService {
 
         //get all price of memory
         const prices: number[] = createPhoneDto.memory.flatMap(memory => {
-            const priceofcolor = memory.color.map(color =>{
+            const priceofcolor = memory.color.map(color => {
                 return color.price;
             });
             return priceofcolor;
@@ -50,34 +49,36 @@ export class PhonesService {
         specificationsOfPhone.screen_info = createPhoneDto.specifications.screen_info;
         phone.specifications = specificationsOfPhone;
 
+        let colors = [];
         //memory
-        const memories = createPhoneDto.memory.map(memoryofPhone => {
+        const memories = await createPhoneDto.memory.map((memoryofPhone) => {
             const memory = new Memory();
             memory.Ram = memoryofPhone.Ram;
             memory.Rom = memoryofPhone.Rom;
-
+            memory.phone = phone;
             //color
             memoryofPhone.color.map(async colorofPhone => {
                 const color = new Color();
                 color.HexRGB = colorofPhone.HexRGB;
                 color.price = colorofPhone.price;
                 color.memory = memory;
-                await this.colorsRepository.save(color);
-            })
+                colors.push(color);
+            });
             return memory;
         })
-        //color
-
-        await this.memoriesRepository.save(memories);
 
         await this.SpecificationsRepository.save(specificationsOfPhone);
-        return await this.phonesRepository.save(phone);
+        const dataPhoneCreate = await this.phonesRepository.save(phone);
+        await this.memoriesRepository.save(memories);
+        await this.colorsRepository.save(colors);
+        return dataPhoneCreate;
     }
 
     async getAll(): Promise<Phone[]> {
         const phone = await this.phonesRepository
             .createQueryBuilder('phone')
-            .leftJoinAndSelect("phone.memory", 'memory')
+            .leftJoinAndSelect("phone.memories", 'memory')
+            .leftJoinAndSelect("memory.colors", 'color')
             .leftJoinAndSelect("phone.specifications", 'specification')
             .getMany();
 
@@ -90,7 +91,8 @@ export class PhonesService {
     async getbyid(id: string): Promise<Phone> {
         const phone = await this.phonesRepository
             .createQueryBuilder('phone')
-            .leftJoinAndSelect("phone.memory", 'memory')
+            .leftJoinAndSelect("phone.memories", 'memory')
+            .leftJoinAndSelect("memory.colors", 'color')
             .leftJoinAndSelect("phone.specifications", 'specification')
             .where("phone.id = :id", { id: id })
             .getOne();
@@ -104,7 +106,8 @@ export class PhonesService {
     async getbyBrand(brand: string): Promise<Phone[]> {
         const phone = await this.phonesRepository
             .createQueryBuilder('phone')
-            .leftJoinAndSelect("phone.memory", 'memory')
+            .leftJoinAndSelect("phone.memories", 'memory')
+            .leftJoinAndSelect("memory.colors", 'color')
             .leftJoinAndSelect("phone.specifications", 'specification')
             .where("phone.brand = :brand", { brand: brand })
             .getMany();

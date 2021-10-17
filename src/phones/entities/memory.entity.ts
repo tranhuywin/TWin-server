@@ -14,8 +14,8 @@ export class Memory {
     Rom: number;
 
     @OneToMany(() =>Color, color => color.memory)
-    color: Color[];
+    colors: Color[];
 
-    @ManyToOne(() => Phone, phone => phone.memory)
+    @ManyToOne(() => Phone, phone => phone.memories)
     phone: Phone;
 }

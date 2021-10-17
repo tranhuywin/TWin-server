@@ -30,5 +30,5 @@ export class Phone {
   specifications: Specifications;
 
   @OneToMany(() =>Memory, memory => memory.phone)
-  memory: Memory[];
+  memories: Memory[];
 }
