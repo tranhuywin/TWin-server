@@ -3,8 +3,10 @@ import { PhonesService } from './phones.service';
 import { CreatePhoneDto } from './dto/create-phone.dto';
 import { Phone } from './entities/phone.entity';
 import { UpdatePhoneDto } from './dto/update-phone.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('phones')
+@ApiTags("phones")
 export class PhonesController {
     constructor(private readonly phonesService: PhonesService) { }
 
