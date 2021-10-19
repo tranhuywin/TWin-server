@@ -12,6 +12,9 @@ export class Color {
     @Column()
     price: number;
 
+    @Column()
+    marketPrice: number;
+
     @ManyToOne(() => Memory, memory => memory.colors)
     memory: Memory;
 }

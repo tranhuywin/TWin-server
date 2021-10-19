@@ -22,16 +22,6 @@ export class UpdatePhoneDto {
     @IsNumber()
     @Min(0)
     @ApiProperty()
-    RAM: number;
-
-    @IsNumber()
-    @Min(0)
-    @ApiProperty()
-    ROM: number;
-
-    @IsNumber()
-    @Min(0)
-    @ApiProperty()
     quantity: number;
 
     @IsNumber()

@@ -34,6 +34,11 @@ class Color {
     @Min(0)
     @ApiProperty()
     price: number;
+
+    @IsNumber()
+    @Min(0)
+    @ApiProperty()
+    marketPrice: number;
 }
 
 class Memory {

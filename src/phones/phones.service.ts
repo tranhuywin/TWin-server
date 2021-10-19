@@ -61,6 +61,7 @@ export class PhonesService {
                 const color = new Color();
                 color.HexRGB = colorofPhone.HexRGB;
                 color.price = colorofPhone.price;
+                color.marketPrice = colorofPhone.marketPrice;
                 color.memory = memory;
                 colors.push(color);
             });
