@@ -10,8 +10,8 @@ $ npm install
 
 ## Running the app
 
-```bash
 # development
+```bash
 $ npm run dev
 ```
 ## Technical

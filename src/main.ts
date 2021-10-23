@@ -18,7 +18,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(process.env.PORT || 3000);
-
-  console.log(`Swagger: http://localhost:${3000}/api`)
+  
+  console.log('');
+  console.log(`[Swagger]                                  http://localhost:${3000}/api`);
+  console.log('');
 }
 bootstrap();

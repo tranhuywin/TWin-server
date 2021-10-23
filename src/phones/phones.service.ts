@@ -62,6 +62,7 @@ export class PhonesService {
                 color.HexRGB = colorofPhone.HexRGB;
                 color.price = colorofPhone.price;
                 color.marketPrice = colorofPhone.marketPrice;
+                color.image = colorofPhone.image;
                 color.memory = memory;
                 colors.push(color);
             });

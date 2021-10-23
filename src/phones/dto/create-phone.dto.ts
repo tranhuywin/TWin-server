@@ -1,7 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Type } from "class-transformer";
-import { IsArray, IsHexColor, IsNotEmpty, IsNumber, IsString, Min, ValidateNested } from "class-validator";
-
+import { Contains, IsArray, IsHexColor, IsNotEmpty, IsNumber, IsString, IsUrl, Min, ValidateNested } from "class-validator";
 
 class Specification {
     @IsString()
@@ -39,6 +37,11 @@ class Color {
     @Min(0)
     @ApiProperty()
     marketPrice: number;
+
+    @ApiProperty()
+    @IsUrl()
+    @Contains(`http://res.cloudinary.com/`)
+    image: string;
 }
 
 class Memory {
@@ -73,6 +76,8 @@ export class CreatePhoneDto {
     description: string;
 
     @ApiProperty()
+    @IsUrl()
+    @Contains(`http://res.cloudinary.com/`)
     image: string;
 
     @IsNumber()
