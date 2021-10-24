@@ -1,4 +1,4 @@
-import { Controller, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Delete, Param, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { UploadApiErrorResponse, UploadApiResponse } from 'cloudinary';
@@ -28,4 +28,9 @@ export class CloudinaryController {
             return {urlImage: response.url};
         });
     }
+
+    @Delete('/remove/:publicid')
+    removeImage(@Param('publicid') publicid: string): Promise<any>{
+      return this.cloudinaryService.removeImage(publicid);
+    }    
 }

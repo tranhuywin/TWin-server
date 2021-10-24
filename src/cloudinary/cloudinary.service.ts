@@ -15,4 +15,9 @@ export default class CloudinaryService {
       toStream(file.buffer).pipe(upload);
     });
   }
+
+  async removeImage(public_id: string): Promise<any> {
+    const dataDetroy = await v2.uploader.destroy(public_id);
+    return dataDetroy;
+  }
 }
