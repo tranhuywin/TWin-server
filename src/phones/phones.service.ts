@@ -4,9 +4,9 @@ import { Phone } from './entities/phone.entity';
 import { Repository } from 'typeorm';
 import { CreatePhoneDto } from './dto/create-phone.dto';
 import { Specifications } from './entities/specification.entity';
-import { Color } from './entities/color.entity';
 import { UpdatePhoneDto } from './dto/update-phone.dto';
 import { Memory } from './entities/memory.entity';
+import { Color } from 'src/color/entities/color.entity';
 
 @Injectable()
 export class PhonesService {

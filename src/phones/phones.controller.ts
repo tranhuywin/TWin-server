@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Patch, Query } from '@nestjs/common';
 import { PhonesService } from './phones.service';
 import { CreatePhoneDto } from './dto/create-phone.dto';
 import { Phone } from './entities/phone.entity';
@@ -25,7 +25,7 @@ export class PhonesController {
         return this.phonesService.getbyid(idPhone);
     }
 
-    @Put('/id/:idPhone')
+    @Patch('/id/:idPhone')
     updatebyidPhone(
         @Param('idPhone') idPhone: string,
         @Body() updatePhoneDto: UpdatePhoneDto

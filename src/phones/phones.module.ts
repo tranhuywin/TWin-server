@@ -4,8 +4,8 @@ import { PhonesController } from './phones.controller';
 import { Phone } from './entities/phone.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Specifications } from './entities/specification.entity';
-import { Color } from './entities/color.entity';
 import { Memory } from './entities/memory.entity';
+import { Color } from 'src/color/entities/color.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Phone, Specifications, Color, Memory])],

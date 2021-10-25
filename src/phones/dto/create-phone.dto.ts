@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Contains, IsArray, IsHexColor, IsNotEmpty, IsNumber, IsString, IsUrl, Min, ValidateNested } from "class-validator";
+import { Contains, IsArray, IsNotEmpty, IsNumber, IsString, IsUrl, Min, ValidateNested } from "class-validator";
+import { CreateColorDto } from "src/color/dto/create-color.dto";
 
 class Specification {
     @IsString()
@@ -23,27 +24,6 @@ class Specification {
     OS: string;
 }
 
-class Color {
-    @IsHexColor()
-    @ApiProperty()
-    HexRGB: string;
-
-    @IsNumber()
-    @Min(0)
-    @ApiProperty()
-    price: number;
-
-    @IsNumber()
-    @Min(0)
-    @ApiProperty()
-    marketPrice: number;
-
-    @ApiProperty()
-    @IsUrl()
-    @Contains(`http://res.cloudinary.com/`)
-    image: string;
-}
-
 class Memory {
     @IsNumber()
     @Min(0)
@@ -56,8 +36,8 @@ class Memory {
     Rom: number;
 
     @ValidateNested()
-    @ApiProperty({type: Color})
-    color: [Color];
+    @ApiProperty({type: CreateColorDto})
+    color: [CreateColorDto];
 }
 
 export class CreatePhoneDto {

@@ -1,5 +1,5 @@
+import { Memory } from 'src/phones/entities/memory.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { Memory } from './memory.entity';
 
 @Entity()
 export class Color {

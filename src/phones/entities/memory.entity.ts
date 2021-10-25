@@ -1,5 +1,5 @@
+import { Color } from 'src/color/entities/color.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
-import { Color } from './color.entity';
 import { Phone } from './phone.entity';
 
 @Entity()
