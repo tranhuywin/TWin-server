@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNumber, Min, ValidateNested } from "class-validator";
+import { IsArray, IsNumber, Min, ValidateNested } from "class-validator";
 import { CreateColorDto } from "src/color/dto/create-color.dto";
 
 export class CreateMemoryDto {
@@ -14,6 +14,7 @@ export class CreateMemoryDto {
     Rom: number;
 
     @ValidateNested()
+    @IsArray()
     @ApiProperty({type: CreateColorDto})
     colors: [CreateColorDto];
 }

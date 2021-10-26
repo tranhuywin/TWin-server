@@ -1,5 +1,5 @@
+import { Memory } from 'src/memory/entities/memory.entity';
 import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, OneToOne, OneToMany } from 'typeorm';
-import { Memory } from './memory.entity';
 import { Specifications } from './specification.entity';
 
 @Entity()

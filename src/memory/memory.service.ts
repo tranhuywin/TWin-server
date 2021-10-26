@@ -1,11 +1,11 @@
 import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Memory } from 'src/phones/entities/memory.entity';
 import { Repository } from 'typeorm';
 import { CreateMemoryDto } from './dto/create-memory.dto';
 import { UpdateMemoryDto } from './dto/update-memory.dto';
 import { PhonesService } from 'src/phones/phones.service';
 import { ColorService } from 'src/color/color.service';
+import { Memory } from './entities/memory.entity';
 
 @Injectable()
 export class MemoryService {

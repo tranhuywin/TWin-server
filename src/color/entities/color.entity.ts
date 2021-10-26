@@ -1,4 +1,4 @@
-import { Memory } from 'src/phones/entities/memory.entity';
+import { Memory } from 'src/memory/entities/memory.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 @Entity()

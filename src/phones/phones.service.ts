@@ -5,8 +5,8 @@ import { Repository } from 'typeorm';
 import { CreatePhoneDto } from './dto/create-phone.dto';
 import { Specifications } from './entities/specification.entity';
 import { UpdatePhoneDto } from './dto/update-phone.dto';
-import { Memory } from './entities/memory.entity';
 import { Color } from 'src/color/entities/color.entity';
+import { Memory } from 'src/memory/entities/memory.entity';
 
 @Injectable()
 export class PhonesService {

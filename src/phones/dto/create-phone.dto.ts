@@ -36,6 +36,7 @@ class Memory {
     Rom: number;
 
     @ValidateNested()
+    @IsArray()
     @ApiProperty({type: CreateColorDto})
     color: [CreateColorDto];
 }
