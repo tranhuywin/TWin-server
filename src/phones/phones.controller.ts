@@ -21,13 +21,13 @@ export class PhonesController {
     }
 
     @Get('/id/:idPhone')
-    getbyidPhone(@Param('idPhone') idPhone: string): Promise<Phone> {
+    getbyidPhone(@Param('idPhone') idPhone: number): Promise<Phone> {
         return this.phonesService.getbyid(idPhone);
     }
 
     @Patch('/id/:idPhone')
     updatebyidPhone(
-        @Param('idPhone') idPhone: string,
+        @Param('idPhone') idPhone: number,
         @Body() updatePhoneDto: UpdatePhoneDto
     ): Promise<Phone> {
         return this.phonesService.updatebyidPhone(idPhone, updatePhoneDto);

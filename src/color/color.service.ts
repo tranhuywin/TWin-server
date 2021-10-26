@@ -1,6 +1,6 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Memory } from 'src/phones/entities/memory.entity';
+import { MemoryService } from 'src/memory/memory.service';
 import { Repository } from 'typeorm';
 import { CreateColorDto } from './dto/create-color.dto';
 import { UpdateColorDto } from './dto/update-color.dto';
@@ -11,13 +11,12 @@ export class ColorService {
   constructor(
     @InjectRepository(Color)
     private readonly colorsRepository: Repository<Color>,
-    @InjectRepository(Memory)
-    private readonly memoriesRepository: Repository<Memory>
-
+    @Inject(forwardRef(() => MemoryService))
+    private readonly memoryService: MemoryService,
     ) {}
 
   async create(idMemory:number, createColorDto: CreateColorDto):Promise<Color> {
-    const memory = await this.memoriesRepository.findOne(idMemory);
+     const memory = await this.memoryService.findOne(idMemory);
 
     const color = new Color();
     color.HexRGB = createColorDto.HexRGB;
@@ -30,7 +29,10 @@ export class ColorService {
   }
 
   async findOne(id: number):Promise<Color>  {
-    return await this.colorsRepository.findOne(id);
+    const color = await this.colorsRepository.findOne(id);
+    if(!color)
+      throw new NotFoundException();
+    return color;
   }
 
   async update(id: number, updateColorDto: UpdateColorDto) {

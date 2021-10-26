@@ -90,7 +90,7 @@ export class PhonesService {
         return phone;
     }
 
-    async getbyid(id: string): Promise<Phone> {
+    async getbyid(id: number): Promise<Phone> {
         const phone = await this.phonesRepository
             .createQueryBuilder('phone')
             .leftJoinAndSelect("phone.memories", 'memory')
@@ -120,7 +120,7 @@ export class PhonesService {
         return phone;
     }
 
-    async updatebyidPhone(id: string, updatePhoneDto: UpdatePhoneDto): Promise<Phone> {
+    async updatebyidPhone(id: number, updatePhoneDto: UpdatePhoneDto): Promise<Phone> {
         const updateData = await this.phonesRepository
             .createQueryBuilder()
             .update(Phone)

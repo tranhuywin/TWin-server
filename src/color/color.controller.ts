@@ -20,12 +20,12 @@ export class ColorController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateColorDto: UpdateColorDto) {
-    return this.colorService.update(+id, updateColorDto);
+  update(@Param('id') id: number, @Body() updateColorDto: UpdateColorDto) {
+    return this.colorService.update(id, updateColorDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.colorService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.colorService.remove(id);
   }
 }

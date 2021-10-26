@@ -11,5 +11,6 @@ import { Color } from 'src/color/entities/color.entity';
   imports: [TypeOrmModule.forFeature([Phone, Specifications, Color, Memory])],
   providers: [PhonesService],
   controllers: [PhonesController],
+  exports: [PhonesService]
 })
-export class PhoneModule {}
+export class PhoneModule { }
