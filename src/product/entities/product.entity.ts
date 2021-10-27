@@ -1,9 +1,9 @@
 import { Memory } from 'src/memory/entities/memory.entity';
-import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, OneToOne, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Specifications } from './specification.entity';
 
 @Entity()
-export class Phone {
+export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -16,6 +16,7 @@ export class Phone {
   @Column()
   description: string;
 
+  //Todo: check this
   @Column()
   image: string;
 
@@ -25,10 +26,9 @@ export class Phone {
   @Column()
   price: number;
 
-  @OneToOne(() => Specifications)
-  @JoinColumn()
-  specifications: Specifications;
+  @OneToMany(() => Specifications, specifications => specifications.product)
+  specifications: [Specifications];
 
-  @OneToMany(() =>Memory, memory => memory.phone)
+  @OneToMany(() =>Memory, memory => memory.product)
   memories: Memory[];
 }

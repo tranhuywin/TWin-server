@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateMemoryDto } from './dto/create-memory.dto';
 import { UpdateMemoryDto } from './dto/update-memory.dto';
-import { PhonesService } from 'src/phones/phones.service';
+import { ProductService } from 'src/product/product.service';
 import { ColorService } from 'src/color/color.service';
 import { Memory } from './entities/memory.entity';
 
@@ -12,18 +12,18 @@ export class MemoryService {
   constructor(
     @InjectRepository(Memory)
     private readonly memoriesRepository: Repository<Memory>,
-    private readonly phoneService: PhonesService,
+    private readonly productService: ProductService,
     @Inject(forwardRef(() => ColorService))
     private readonly colorService: ColorService,
   ) { }
 
-  async create(idPhone: number, createMemoryDto: CreateMemoryDto): Promise<Memory> {
-    const phone = await this.phoneService.getbyid(idPhone);
+  async create(idProduct: number, createMemoryDto: CreateMemoryDto): Promise<Memory> {
+    const product = await this.productService.getbyid(idProduct);
 
     const memory = new Memory();
     memory.Ram = createMemoryDto.Ram;
     memory.Rom = createMemoryDto.Rom;
-    memory.phone = phone;
+    memory.product = product;
     const dataMemory = await this.memoriesRepository.save(memory)
 
     createMemoryDto.colors.map(async (color) => {

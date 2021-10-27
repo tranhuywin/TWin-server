@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsString, Min } from "class-validator";
 
-export class SortPhoneDto {
+export class SortProductDto {
     @IsNotEmpty()
     @IsString()
     name: string;

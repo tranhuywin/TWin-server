@@ -9,9 +9,9 @@ import { ApiTags } from '@nestjs/swagger';
 export class MemoryController {
   constructor(private readonly memoryService: MemoryService) {}
 
-  @Post('/idPhone/:idPhone')
-  create(@Body() createMemoryDto: CreateMemoryDto, @Param('idPhone') idPhone: number) {
-    return this.memoryService.create(idPhone, createMemoryDto);
+  @Post('/idProduct/:idProduct')
+  create(@Body() createMemoryDto: CreateMemoryDto, @Param('idProduct') idProduct: number) {
+    return this.memoryService.create(idProduct, createMemoryDto);
   }
 
   @Get(':id')
