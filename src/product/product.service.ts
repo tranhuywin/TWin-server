@@ -27,23 +27,27 @@ export class ProductService {
         product.brand = createProductDto.brand;
         product.name = createProductDto.name;
         product.description = createProductDto.description;
-        product.image = createProductDto.image;
+        product.thumbnail = createProductDto.thumbnail;
         product.name = createProductDto.name;
         product.quantity = createProductDto.quantity;
 
         //get all price of memory
-        let prices: number[] = [0];
-        if (createProductDto.capacityPhone) {
-            prices = createProductDto.capacityPhone.flatMap(memory => {
+        let prices: number[][] = [];
+        if (createProductDto.memoryPhone) {
+            prices = createProductDto.memoryPhone.flatMap(memory => {
                 const priceofcolor = memory.colors.map(color => {
-                    return color.price;
+                    return [color.price, color.marketPrice];
                 });
                 return priceofcolor;
             });
         }
 
-        // min price of phone
-        product.price = Math.min(...prices);
+        // get min price from 2-dimensional arrays of price
+        product.price = Math.min(...(prices.map(price => price[0])));
+        console.log(product.price);
+        // get min marketPrice from 2-dimensional arrays of price
+        product.marketPrice = Math.min(...(prices.map(price => price[1])));
+        console.log(product.marketPrice);
 
         const specifications = await createProductDto.specifications.map(specification => {
             const specificationsOfProduct = new Specifications();
@@ -56,8 +60,8 @@ export class ProductService {
         let colors = [];
         let memories = [];
         //memory
-        if (createProductDto.capacityPhone) {
-            memories = await createProductDto.capacityPhone.map((memoryofProduct) => {
+        if (createProductDto.memoryPhone) {
+            memories = await createProductDto.memoryPhone.map((memoryofProduct) => {
                 const memory = new Memory();
                 memory.Ram = memoryofProduct.Ram;
                 memory.Rom = memoryofProduct.Rom;
@@ -76,22 +80,35 @@ export class ProductService {
             })
         }
 
+        if(createProductDto.colorAccessory){
+            createProductDto.colorAccessory.map(async colorofProduct => {
+                const color = new Color();
+                color.HexRGB = colorofProduct.HexRGB;
+                color.price = colorofProduct.price;
+                color.marketPrice = colorofProduct.marketPrice;
+                color.image = colorofProduct.image;
+                color.product = product;
+                colors.push(color);
+            });
+        }
+
 
         
-        const dataProductCreate = await this.productsRepository.save(product);
+        await this.productsRepository.save(product);
         await this.SpecificationsRepository.save(specifications);
-        if (createProductDto.capacityPhone)
+        if (createProductDto.memoryPhone)
         await this.memoriesRepository.save(memories);
-        if (createProductDto.capacityPhone)
         await this.colorsRepository.save(colors);
-        return dataProductCreate;
+        const newProduct = await this.getbyid(product.id);
+        return newProduct;
     }
 
     async getAll(): Promise<Product[]> {
         const product = await this.productsRepository
             .createQueryBuilder('product')
             .leftJoinAndSelect("product.memories", 'memory')
-            .leftJoinAndSelect("memory.colors", 'color')
+            .leftJoinAndSelect("memory.colors", 'colorPhone')
+            .leftJoinAndSelect("product.colorAccessory", 'colorAccessory')
             .leftJoinAndSelect("product.specifications", 'specification')
             .getMany();
 
@@ -105,7 +122,8 @@ export class ProductService {
         const product = await this.productsRepository
             .createQueryBuilder('product')
             .leftJoinAndSelect("product.memories", 'memory')
-            .leftJoinAndSelect("memory.colors", 'color')
+            .leftJoinAndSelect("memory.colors", 'colorPhone')
+            .leftJoinAndSelect("product.colorAccessory", 'colorAccessory')
             .leftJoinAndSelect("product.specifications", 'specification')
             .where("product.id = :id", { id: id })
             .getOne();
@@ -120,7 +138,8 @@ export class ProductService {
         const product = await this.productsRepository
             .createQueryBuilder('product')
             .leftJoinAndSelect("product.memories", 'memory')
-            .leftJoinAndSelect("memory.colors", 'color')
+            .leftJoinAndSelect("memory.colors", 'colorPhone')
+            .leftJoinAndSelect("product.colorAccessory", 'colorAccessory')
             .leftJoinAndSelect("product.specifications", 'specification')
             .where("product.brand = :brand", { brand: brand })
             .getMany();

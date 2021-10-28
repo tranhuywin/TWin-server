@@ -31,7 +31,7 @@ export class CreateProductDto {
     @ApiProperty()
     @IsUrl()
     @Contains(`http://res.cloudinary.com/`)
-    image: string;
+    thumbnail: string;
 
     @IsNumber()
     @Min(0)
@@ -46,7 +46,7 @@ export class CreateProductDto {
     @IsOptional()
     @ApiProperty({type: CreateMemoryDto})
     @ValidateNested()
-    capacityPhone: [CreateMemoryDto]
+    memoryPhone: [CreateMemoryDto]
 
     @IsArray()
     @IsOptional()

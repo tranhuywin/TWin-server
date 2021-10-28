@@ -1,3 +1,4 @@
+import { Color } from 'src/color/entities/color.entity';
 import { Memory } from 'src/memory/entities/memory.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Specifications } from './specification.entity';
@@ -18,7 +19,7 @@ export class Product {
 
   //Todo: check this
   @Column()
-  image: string;
+  thumbnail: string;
 
   @Column()
   quantity: number;
@@ -26,9 +27,15 @@ export class Product {
   @Column()
   price: number;
 
+  @Column()
+  marketPrice: number;
+
   @OneToMany(() => Specifications, specifications => specifications.product)
   specifications: [Specifications];
 
   @OneToMany(() =>Memory, memory => memory.product)
   memories: Memory[];
+
+  @OneToMany(() => Color, color => color.product)
+  colorAccessory: Color[];
 }
