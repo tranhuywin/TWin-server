@@ -40,14 +40,12 @@ export class ProductService {
                 });
                 return priceofcolor;
             });
-        }
 
-        // get min price from 2-dimensional arrays of price
-        product.price = Math.min(...(prices.map(price => price[0])));
-        console.log(product.price);
-        // get min marketPrice from 2-dimensional arrays of price
-        product.marketPrice = Math.min(...(prices.map(price => price[1])));
-        console.log(product.marketPrice);
+            // get min price from 2-dimensional arrays of price
+            product.price = Math.min(...(prices.map(price => price[0])));
+            // get min marketPrice from 2-dimensional arrays of price
+            product.marketPrice = Math.min(...(prices.map(price => price[1])));
+        }
 
         const specifications = await createProductDto.specifications.map(specification => {
             const specificationsOfProduct = new Specifications();
@@ -80,7 +78,7 @@ export class ProductService {
             })
         }
 
-        if(createProductDto.colorAccessory){
+        if (createProductDto.colorAccessory) {
             createProductDto.colorAccessory.map(async colorofProduct => {
                 const color = new Color();
                 color.HexRGB = colorofProduct.HexRGB;
@@ -89,17 +87,24 @@ export class ProductService {
                 color.image = colorofProduct.image;
                 color.product = product;
                 colors.push(color);
+
+                prices.push([colorofProduct.price, colorofProduct.marketPrice]);
             });
+
+            // get min price from 2-dimensional arrays of price
+        product.price = Math.min(...(prices.map(price => price[0])));
+        // get min marketPrice from 2-dimensional arrays of price
+        product.marketPrice = Math.min(...(prices.map(price => price[1])));
         }
 
 
-        
+
         await this.productsRepository.save(product);
         await this.SpecificationsRepository.save(specifications);
         if (createProductDto.memoryPhone)
-        await this.memoriesRepository.save(memories);
+            await this.memoriesRepository.save(memories);
         await this.colorsRepository.save(colors);
-        const newProduct = await this.getbyid(product.id);
+        const newProduct = await this.findOne(product.id);
         return newProduct;
     }
 
@@ -118,7 +123,7 @@ export class ProductService {
         return product;
     }
 
-    async getbyid(id: number): Promise<Product> {
+    async findOne(id: number): Promise<Product> {
         const product = await this.productsRepository
             .createQueryBuilder('product')
             .leftJoinAndSelect("product.memories", 'memory')
@@ -129,7 +134,7 @@ export class ProductService {
             .getOne();
 
         if (!product)
-            throw new NotFoundException();
+            throw new NotFoundException('Product not found');
 
         return product;
     }
@@ -161,7 +166,7 @@ export class ProductService {
         if (!updateData.affected) {
             throw new BadRequestException;
         }
-        return this.getbyid(id);
+        return this.findOne(id);
     }
 
     async detelebyidProduct(id: string): Promise<{ status: string }> {

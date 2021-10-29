@@ -22,7 +22,7 @@ export class ProductController {
 
     @Get('/id/:idProduct')
     getbyidProduct(@Param('idProduct') idProduct: number): Promise<Product> {
-        return this.productsService.getbyid(idProduct);
+        return this.productsService.findOne(idProduct);
     }
 
     @Patch('/id/:idProduct')

@@ -1,3 +1,4 @@
+import { CartItem } from 'src/cart/entities/cartItem.entity';
 import { Color } from 'src/color/entities/color.entity';
 import { Memory } from 'src/memory/entities/memory.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
@@ -38,4 +39,7 @@ export class Product {
 
   @OneToMany(() => Color, color => color.product)
   colorAccessory: Color[];
+
+  @OneToMany(() => CartItem, cartItem => cartItem.product)
+  cartItems: CartItem[];
 }

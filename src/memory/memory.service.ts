@@ -18,7 +18,7 @@ export class MemoryService {
   ) { }
 
   async create(idProduct: number, createMemoryDto: CreateMemoryDto): Promise<Memory> {
-    const product = await this.productService.getbyid(idProduct);
+    const product = await this.productService.findOne(idProduct);
 
     const memory = new Memory();
     memory.Ram = createMemoryDto.Ram;
