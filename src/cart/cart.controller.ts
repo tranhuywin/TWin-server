@@ -9,7 +9,7 @@ import { Cart } from './entities/cart.entity';
 @Controller('cart')
 @ApiTags("cart")
 export class CartController {
-  constructor(private readonly cartService: CartService) {}
+  constructor(private readonly cartService: CartService) { }
 
   @Post()
   create(@Body() createCartDto: CreateCartDto) {
@@ -17,7 +17,7 @@ export class CartController {
   }
 
   @Post('/:id/add-product')
-  addProduct(@Param('id') id: number, @Body() createCartItemDto: CreateCartItemDto): Promise<Cart>{
+  addProduct(@Param('id') id: number, @Body() createCartItemDto: CreateCartItemDto): Promise<Cart> {
     return this.cartService.addProduct(id, createCartItemDto);
   }
 
@@ -41,9 +41,16 @@ export class CartController {
     return this.cartService.remove(+id);
   }
 
-  @Delete('/remove-cart-item/:cartItemId')
-  removeCartItem( @Param('cartItemId') cartItemId: number): Promise<{ status: string}>{
-    return this.cartService.removeCartItem( +cartItemId);
+  @Patch('update-cart-item/:cartItemId')
+  updateCartItem(
+    @Param('cartItemId') cartItemId: number,
+    @Body() updateCartItemDto: CreateCartItemDto
+  ): Promise<IStatusResult> {
+    return this.cartService.updateCartItem(cartItemId, updateCartItemDto);
   }
-  
+  @Delete('/remove-cart-item/:cartItemId')
+  removeCartItem(@Param('cartItemId') cartItemId: number): Promise<IStatusResult> {
+    return this.cartService.removeCartItem(+cartItemId);
+  }
+
 }

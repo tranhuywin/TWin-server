@@ -60,7 +60,7 @@ export class CartService {
     return cart;
   }
 
-  update(id: number, updateCartDto: UpdateCartDto) {
+  update(id: number, _updateCartDto: UpdateCartDto) {
     return `This action updates a #${id} cart`;
   }
 
@@ -68,13 +68,24 @@ export class CartService {
     return `This action removes a #${id} cart`;
   }
 
-  async removeCartItem(cartItemId: number): Promise<{ status: string}> {
+  async removeCartItem(cartItemId: number): Promise<IStatusResult> {
     const cartItem = await this.cartItemRepository.findOne(cartItemId);
     if (!cartItem) {
       throw new NotFoundException('Cart item not found');
     }
     await this.cartItemRepository.remove(cartItem);
-    return { status: 'success'};
+    const result: IStatusResult = {status: 'success'};
+    return result;
+  }
+
+  async updateCartItem(id: number, updateCartItemDto: CreateCartItemDto): Promise<IStatusResult> {
+    const dataUpdate = await this.cartItemRepository.update(id, updateCartItemDto);
+    if(dataUpdate.affected === 0) {
+      throw new NotFoundException('Cart item not found');
+    }
+    const result: IStatusResult = {status: 'success'};
+    
+    return result;
   }
 
 }

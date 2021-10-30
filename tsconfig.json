@@ -1,4 +1,5 @@
 {
+
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
@@ -24,4 +25,18 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
   }
+  
+    //"noImplicitAny": false, //
+    //"strictNullChecks": false,//
+    //"strictFunctionTypes": true,
+
+    //"noImplicitThis": true,
+    //"noUnusedLocals": true,
+    //"noUnusedParameters": true,
+    //"noImplicitReturns": true,
+
+    //"noFallthroughCasesInSwitch": false,
+
+    //"esModuleInterop": true,//
+
 }

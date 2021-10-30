@@ -1,7 +1,7 @@
-import { Controller, Delete, Param, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Delete, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { UploadApiErrorResponse, UploadApiResponse } from 'cloudinary';
+import { UploadApiResponse } from 'cloudinary';
 import CloudinaryService from './cloudinary.service';
 
 @Controller('cloudinary')
