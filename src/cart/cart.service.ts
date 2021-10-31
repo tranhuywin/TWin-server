@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { CreateCartItemDto } from './dto/create-cartItem.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
+import { UpdateCartItemDto } from './dto/update-cartItem.dto';
 import { Cart } from './entities/cart.entity';
 import { CartItem } from './entities/cartItem.entity';
 
@@ -60,8 +61,10 @@ export class CartService {
     return cart;
   }
 
-  update(id: number, _updateCartDto: UpdateCartDto) {
-    return `This action updates a #${id} cart`;
+  async update(id: number, updateCartDto: UpdateCartDto): Promise<Cart> {
+    await this.findOne(id);
+    await this.cartRepository.update(id, updateCartDto);
+    return await this.findOne(id);
   }
 
   remove(id: number) {
@@ -78,7 +81,7 @@ export class CartService {
     return result;
   }
 
-  async updateCartItem(id: number, updateCartItemDto: CreateCartItemDto): Promise<IStatusResult> {
+  async updateCartItem(id: number, updateCartItemDto: UpdateCartItemDto): Promise<IStatusResult> {
     const dataUpdate = await this.cartItemRepository.update(id, updateCartItemDto);
     if(dataUpdate.affected === 0) {
       throw new NotFoundException('Cart item not found');

@@ -23,20 +23,18 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-  }
-  
+    "noFallthroughCasesInSwitch": false,
     //"noImplicitAny": false, //
     //"strictNullChecks": false,//
     //"strictFunctionTypes": true,
 
     //"noImplicitThis": true,
-    //"noUnusedLocals": true,
-    //"noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     //"noImplicitReturns": true,
 
     //"noFallthroughCasesInSwitch": false,
 
     //"esModuleInterop": true,//
-
+  }
 }

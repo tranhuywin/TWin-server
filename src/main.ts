@@ -2,10 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  app.use(cookieParser());
   const config = new DocumentBuilder()
     .setTitle('TWin shop')
     .setDescription('The API TWin-shop server')
@@ -16,7 +17,7 @@ async function bootstrap() {
   app.enableCors();
   // TO DO: Read more about validation pipeline 
   app.useGlobalPipes(new ValidationPipe());
-
+  
   await app.listen(process.env.PORT || 3000);
   
   console.log('');

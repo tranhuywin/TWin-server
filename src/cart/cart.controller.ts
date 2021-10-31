@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Req, BadRequestException } from '@nestjs/common';
+import { Response, Request } from 'express';
 import { ApiTags } from '@nestjs/swagger';
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
@@ -12,8 +13,10 @@ export class CartController {
   constructor(private readonly cartService: CartService) { }
 
   @Post()
-  create(@Body() createCartDto: CreateCartDto) {
-    return this.cartService.create(createCartDto);
+  async create(@Body() createCartDto: CreateCartDto, @Res({ passthrough: true }) response: Response) {
+    const newCart = await this.cartService.create(createCartDto);
+    response.cookie('cart_id', newCart.id);
+    return newCart;
   }
 
   @Post('/:id/add-product')
@@ -21,14 +24,17 @@ export class CartController {
     return this.cartService.addProduct(id, createCartItemDto);
   }
 
-  @Get()
+  @Get('/all')
   findAll(): Promise<Cart[]> {
     return this.cartService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<Cart> {
-    return this.cartService.findOne(+id);
+  @Get()
+  findOne(@Req() request: Request): Promise<Cart> {
+    if(request.cookies.cart_id) {
+      return this.cartService.findOne(request.cookies.cart_id);
+    }
+    throw new BadRequestException("No cart_id cookie found!");
   }
 
   @Patch(':id')
@@ -48,6 +54,7 @@ export class CartController {
   ): Promise<IStatusResult> {
     return this.cartService.updateCartItem(cartItemId, updateCartItemDto);
   }
+  
   @Delete('/remove-cart-item/:cartItemId')
   removeCartItem(@Param('cartItemId') cartItemId: number): Promise<IStatusResult> {
     return this.cartService.removeCartItem(+cartItemId);
