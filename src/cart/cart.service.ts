@@ -67,8 +67,11 @@ export class CartService {
     return await this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cart`;
+  async remove(id: number): Promise<IStatusResult> {
+    const cart = await this.findOne(id);
+    await this.cartRepository.remove(cart);
+    const result: IStatusResult = { status: 'success' };
+    return result;
   }
 
   async removeCartItem(cartItemId: number): Promise<IStatusResult> {
@@ -77,17 +80,17 @@ export class CartService {
       throw new NotFoundException('Cart item not found');
     }
     await this.cartItemRepository.remove(cartItem);
-    const result: IStatusResult = {status: 'success'};
+    const result: IStatusResult = { status: 'success' };
     return result;
   }
 
   async updateCartItem(id: number, updateCartItemDto: UpdateCartItemDto): Promise<IStatusResult> {
     const dataUpdate = await this.cartItemRepository.update(id, updateCartItemDto);
-    if(dataUpdate.affected === 0) {
+    if (dataUpdate.affected === 0) {
       throw new NotFoundException('Cart item not found');
     }
-    const result: IStatusResult = {status: 'success'};
-    
+    const result: IStatusResult = { status: 'success' };
+
     return result;
   }
 
