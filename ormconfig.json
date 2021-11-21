@@ -8,6 +8,9 @@
     "entities": ["dist/**/*.entity{.ts,.js}"],
     "synchronize": true,
     "migrations": ["migration/*.js"],
+    "extra": {
+        "charset": "utf8mb4_unicode_ci"
+    },
     "cli": {
         "migrationsDir": "migration"
     }

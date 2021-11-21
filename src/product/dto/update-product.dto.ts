@@ -1,38 +1,43 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Contains, IsNotEmpty, IsNumber, IsString, IsUrl, Min } from "class-validator";
+import { Contains, IsNumber, IsOptional, IsString, IsUrl, Min } from "class-validator";
 
 export class UpdateProductDto {
-    @IsNotEmpty()
+    @IsString()
+    @IsOptional()
+    @ApiProperty()
+    name?: string;
+
+    @IsOptional()
     @IsString()
     @ApiProperty()
-    name: string;
+    brand?: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     @ApiProperty()
-    brand: string;
+    description?: string;
 
-    @IsString()
-    @ApiProperty()
-    description: string;
-
+    @IsOptional()
     @ApiProperty()
     @IsUrl()
     @Contains(`http://res.cloudinary.com/`)
-    thumbnail: string;
+    thumbnail?: string;
     
+    @IsOptional()
     @IsNumber()
     @Min(0)
     @ApiProperty()
-    quantity: number;
+    quantity?: number;
 
+    @IsOptional()
     @IsNumber()
     @Min(0)
     @ApiProperty()
-    price: number;
+    price?: number;
 
+    @IsOptional()
     @IsNumber()
     @Min(0)
     @ApiProperty()
-    marketPrice: number;
+    marketPrice?: number;
 }

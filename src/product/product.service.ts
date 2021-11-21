@@ -92,9 +92,9 @@ export class ProductService {
             });
 
             // get min price from 2-dimensional arrays of price
-        product.price = Math.min(...(prices.map(price => price[0])));
-        // get min marketPrice from 2-dimensional arrays of price
-        product.marketPrice = Math.min(...(prices.map(price => price[1])));
+            product.price = Math.min(...(prices.map(price => price[0])));
+            // get min marketPrice from 2-dimensional arrays of price
+            product.marketPrice = Math.min(...(prices.map(price => price[1])));
         }
 
 
@@ -156,16 +156,18 @@ export class ProductService {
     }
 
     async updatebyidProduct(id: number, updateProductDto: UpdateProductDto): Promise<Product> {
-        const updateData = await this.productsRepository
-            .createQueryBuilder()
-            .update(Product)
-            .set(updateProductDto)
-            .where('id = :id', { id: id })
-            .execute()
+        await this.findOne(id);
+        await this.productsRepository.update(id, updateProductDto);
+        // const updateData = await this.productsRepository
+        //     .createQueryBuilder()
+        //     .update(Product)
+        //     .set(updateProductDto)
+        //     .where('id = :id', { id: id })
+        //     .execute()
 
-        if (!updateData.affected) {
-            throw new BadRequestException;
-        }
+        // if (!updateData.affected) {
+        //     throw new BadRequestException;
+        // }
         return this.findOne(id);
     }
 

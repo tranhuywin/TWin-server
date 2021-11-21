@@ -7,9 +7,10 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ColorModule } from './color/color.module';
 import { MemoryModule } from './memory/memory.module';
 import { CartModule } from './cart/cart.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), ProductModule, UserModule, CloudinaryModule, ColorModule, MemoryModule, CartModule],
+  imports: [TypeOrmModule.forRoot(), ProductModule, UserModule, CloudinaryModule, ColorModule, MemoryModule, CartModule, OrderModule],
   controllers: [UserController],
 }) 
 export class AppModule {}

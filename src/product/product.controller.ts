@@ -20,12 +20,12 @@ export class ProductController {
         return this.productsService.getAll();
     }
 
-    @Get('/id/:idProduct')
+    @Get('/:idProduct')
     getbyidProduct(@Param('idProduct') idProduct: number): Promise<Product> {
         return this.productsService.findOne(idProduct);
     }
 
-    @Patch('/id/:idProduct')
+    @Patch('/:idProduct')
     updatebyidProduct(
         @Param('idProduct') idProduct: number,
         @Body() updateProductDto: UpdateProductDto
@@ -33,7 +33,7 @@ export class ProductController {
         return this.productsService.updatebyidProduct(idProduct, updateProductDto);
     }
 
-    @Delete('/id/:idProduct')
+    @Delete('/:idProduct')
     deleteProduct(@Param('idProduct') idProduct: string): Promise<{ status: string }> {
         return this.productsService.detelebyidProduct(idProduct);
     }
