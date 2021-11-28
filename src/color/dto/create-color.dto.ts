@@ -16,6 +16,11 @@ export class CreateColorDto {
     @ApiProperty()
     marketPrice: number;
 
+    @IsNumber()
+    @ApiProperty()
+    @Min(0)
+    quantity: number;
+
     @ApiProperty()
     @IsUrl()
     @Contains(`http://res.cloudinary.com/`)

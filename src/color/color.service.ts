@@ -16,16 +16,9 @@ export class ColorService {
     ) {}
 
   async create(idMemory:number, createColorDto: CreateColorDto):Promise<Color> {
-     const memory = await this.memoryService.findOne(idMemory);
-
-    const color = new Color();
-    color.HexRGB = createColorDto.HexRGB;
-    color.image = createColorDto.image;
-    color.marketPrice = createColorDto.marketPrice;
-    color.price = createColorDto.price;
-    color.memory = memory;
-
-    return await this.colorsRepository.save(color); 
+     await this.memoryService.findOne(idMemory);
+    const color = await this.colorsRepository.create(createColorDto);
+    return await this.colorsRepository.save(color);
   }
 
   async findOne(id: number):Promise<Color>  {
@@ -36,7 +29,6 @@ export class ColorService {
   }
 
   async update(id: number, updateColorDto: UpdateColorDto) {
-
     const updateData = await this.colorsRepository
             .createQueryBuilder()
             .update(Color)

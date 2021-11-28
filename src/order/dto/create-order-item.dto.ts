@@ -4,7 +4,7 @@ import { IsNotEmpty, Min } from "class-validator";
 export class CreateOrderItemDto {
     @ApiProperty()
     @IsNotEmpty()
-    productId: number;
+    colorId: number;
 
     @ApiProperty()
     @IsNotEmpty()

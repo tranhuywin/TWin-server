@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -16,9 +16,11 @@ export class OrderController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query('status') status: number): Promise<Order[]> {
+    console.log(status);
     return this.orderService.findAll();
   }
+
 
   @Get(':id')
   findOne(@Param('id') id: number) {

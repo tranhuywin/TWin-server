@@ -31,9 +31,9 @@ export class Order {
     @Column()
     otherRequests: string;
 
-    @Column()
+    @Column("date")
     createdAt: Date;
 
-    @Column()
+    @Column("date")
     updatedAt: Date;
 }

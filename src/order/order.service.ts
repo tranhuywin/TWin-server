@@ -1,31 +1,42 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProductService } from 'src/product/product.service';
+import { ColorService } from 'src/color/color.service';
 import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './entities/order.entity';
+import { OrderItem } from './entities/orderItem.entity';
 @Injectable()
 export class OrderService {
   constructor(
     @InjectRepository(Order)
     private readonly orderRepository: Repository<Order>,
-    private readonly productService: ProductService,
+    @InjectRepository(OrderItem)
+    private readonly orderItemsRepository: Repository<OrderItem>,
+    private readonly colorService: ColorService,
   ) { }
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
     const order = await this.orderRepository.create(createOrderDto);
     order.createdAt = new Date();
     order.updatedAt = new Date();
+    const orderData = await this.orderRepository.save(order)
+    //order items
+    const orderItems = createOrderDto.orderItems.map(async item => {
+      const orderItem = await this.orderItemsRepository.create(item);
+      orderItem.order = order;
 
-    createOrderDto.orderItems.map(async item => {
-      const product = await this.productService.findOne(item.productId);
-      if (item.quantity > product.quantity) {
-        throw new BadRequestException('Product quantity is not enough');
+      const color = await this.colorService.findOne(item.colorId);
+      if(item.quantity > color.quantity){
+        throw new BadRequestException('Color of product quantity is not enough');
       }
-      this.productService.updatebyidProduct(item.productId, { quantity: product.quantity - item.quantity });
-    })
-    return this.orderRepository.save(order);
+      orderItem.color = color;
+      await this.colorService.update(color.id, { quantity: color.quantity - item.quantity });
+      return orderItem;
+    });
+    const orderItemsSave = await Promise.all(orderItems);
+    await this.orderItemsRepository.save(orderItemsSave);
+    return orderData;
   }
 
   async findAll(): Promise<Order[]> {
@@ -36,6 +47,7 @@ export class OrderService {
     const order = await this.orderRepository
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.orderItems', 'items')
+      .leftJoinAndSelect('items.color', 'color')
       .where('order.id = :id', { id: id })
       .getOne();
     if (!order) {
@@ -44,8 +56,16 @@ export class OrderService {
     return order;
   }
 
-  update(id: number, _updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+   async update(id: number, updateOrderDto: UpdateOrderDto):Promise<IStatusResult> {
+    const updateData =  await this.orderRepository.update(id, updateOrderDto);
+    if (updateData.affected) {
+      return {
+        status: 'success',
+      };
+    }
+    else {
+      throw new NotFoundException('Order update failed');
+    }
   }
 
   async remove(id: number): Promise<IStatusResult> {

@@ -1,4 +1,4 @@
-import { Product } from "src/product/entities/product.entity";
+import { Color } from "src/color/entities/color.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Order } from "./order.entity";
 
@@ -7,9 +7,9 @@ export class OrderItem {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(()=>Product)
+    @OneToOne(()=>Color)
     @JoinColumn()
-    product: Product;
+    color: Color;
 
     @ManyToOne(() => Order, (order) => order.orderItems)
     order: Order;

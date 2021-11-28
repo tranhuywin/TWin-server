@@ -9,7 +9,7 @@ export class CreateOrderDto {
     @IsNumber()
     @Min(0)
     @Max(3)
-    @ApiProperty()
+    @ApiProperty({description: "0 = waiting comformation, 1 = waiting delivery, 2 = delivered, 3 = canceled"})
     status: number;
 
     @IsNotEmpty()
