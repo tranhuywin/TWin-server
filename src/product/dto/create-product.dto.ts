@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Contains, IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl, Min, ValidateNested } from "class-validator";
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl, Min, ValidateNested } from "class-validator";
 import { CreateColorDto } from "src/color/dto/create-color.dto";
 import { CreateMemoryDto } from "src/memory/dto/create-memory.dto";
 
