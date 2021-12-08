@@ -23,6 +23,5 @@ export class CreateColorDto {
 
     @ApiProperty()
     @IsUrl()
-    @Contains(`http://res.cloudinary.com/`)
     image: string;
 }

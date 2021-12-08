@@ -20,7 +20,6 @@ export class UpdateProductDto {
     @IsOptional()
     @ApiProperty()
     @IsUrl()
-    @Contains(`http://res.cloudinary.com/`)
     thumbnail?: string;
     
     @IsOptional()

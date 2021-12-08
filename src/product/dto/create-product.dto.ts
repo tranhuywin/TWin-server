@@ -30,7 +30,6 @@ export class CreateProductDto {
 
     @ApiProperty()
     @IsUrl()
-    @Contains(`http://res.cloudinary.com/`)
     thumbnail: string;
 
     @IsNumber()
