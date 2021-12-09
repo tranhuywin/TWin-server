@@ -22,9 +22,9 @@ export class Color {
     @Column()
     quantity: number;
 
-    @ManyToOne(() => Memory, memory => memory.colors)
+    @ManyToOne(() => Memory, memory => memory.colors, { cascade: true, onDelete: "CASCADE"})
     memory: Memory;
 
-    @ManyToOne(() => Product, product => product.colorAccessory)
+    @ManyToOne(() => Product, product => product.colorAccessory, { cascade: true, onDelete: "CASCADE"})
     product: Product;
 }

@@ -7,7 +7,7 @@ export class Order {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => User, (user) => user.orders)
+    @ManyToOne(() => User, (user) => user.orders, { cascade: true, onDelete: "CASCADE"})
     user: User;
 
     @OneToMany(() => OrderItem, (orderItem) => orderItem.order)

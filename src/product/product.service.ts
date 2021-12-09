@@ -158,20 +158,10 @@ export class ProductService {
     async updatebyidProduct(id: number, updateProductDto: UpdateProductDto): Promise<Product> {
         await this.findOne(id);
         await this.productsRepository.update(id, updateProductDto);
-        // const updateData = await this.productsRepository
-        //     .createQueryBuilder()
-        //     .update(Product)
-        //     .set(updateProductDto)
-        //     .where('id = :id', { id: id })
-        //     .execute()
-
-        // if (!updateData.affected) {
-        //     throw new BadRequestException;
-        // }
         return this.findOne(id);
     }
 
-    async detelebyidProduct(id: string): Promise<{ status: string }> {
+    async detelebyidProduct(id: number): Promise<{ status: string }> {
         const deleteData = await this.productsRepository.delete(id);
 
         if (!deleteData.affected) {

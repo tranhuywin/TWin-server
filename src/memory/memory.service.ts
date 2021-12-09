@@ -3,22 +3,25 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateMemoryDto } from './dto/create-memory.dto';
 import { UpdateMemoryDto } from './dto/update-memory.dto';
-import { ProductService } from 'src/product/product.service';
 import { ColorService } from 'src/color/color.service';
 import { Memory } from './entities/memory.entity';
+import { ProductService } from 'src/product/product.service';
 
 @Injectable()
 export class MemoryService {
   constructor(
     @InjectRepository(Memory)
     private readonly memoriesRepository: Repository<Memory>,
-    private readonly productService: ProductService,
+    // @InjectRepository(Product)
+    // private readonly productsRepository: Repository<Product>,
+    @Inject(forwardRef(() => ProductService))
+        private readonly productsService: ProductService,
     @Inject(forwardRef(() => ColorService))
     private readonly colorService: ColorService,
   ) { }
 
   async create(idProduct: number, createMemoryDto: CreateMemoryDto): Promise<Memory> {
-    const product = await this.productService.findOne(idProduct);
+    const product = await this.productsService.findOne(idProduct);
 
     const memory = new Memory();
     memory.Ram = createMemoryDto.Ram;
@@ -31,6 +34,15 @@ export class MemoryService {
     })
 
     return dataMemory;
+  }
+
+  async findAll(): Promise<Memory[]> {
+    return await this.memoriesRepository.find();
+  }
+
+  async findByProduct(idProduct: number): Promise<Memory[]> {
+    const product = await this.productsService.findOne(idProduct);
+    return await this.memoriesRepository.find({ product: product });
   }
 
   async findOne(id: number): Promise<Memory> {
@@ -62,7 +74,6 @@ export class MemoryService {
   async remove(id: number): Promise<{ status: 'success' }> {
     const deleteData = await this.memoriesRepository.delete(id);
 
-    //TODO: remove colors
     if (!deleteData.affected) {
       throw new BadRequestException;
     }

@@ -7,11 +7,11 @@ export class OrderItem {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(()=>Color)
+    @OneToOne(()=>Color, { cascade: true, onDelete: "CASCADE"})
     @JoinColumn()
     color: Color;
 
-    @ManyToOne(() => Order, (order) => order.orderItems)
+    @ManyToOne(() => Order, (order) => order.orderItems, { cascade: true, onDelete: "CASCADE"})
     order: Order;
 
     @Column()

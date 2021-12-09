@@ -34,7 +34,7 @@ export class ProductController {
     }
 
     @Delete('/:idProduct')
-    deleteProduct(@Param('idProduct') idProduct: string): Promise<{ status: string }> {
+    deleteProduct(@Param('idProduct') idProduct: number): Promise<{ status: string }> {
         return this.productsService.detelebyidProduct(idProduct);
     }
 

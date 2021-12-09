@@ -31,7 +31,8 @@ export class Product {
   @Column()
   marketPrice: number;
 
-  @OneToMany(() => Specifications, specifications => specifications.product)
+  @OneToMany(() => Specifications, 
+  specifications => specifications.product)
   specifications: [Specifications];
 
   @OneToMany(() =>Memory, memory => memory.product)

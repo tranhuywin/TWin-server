@@ -16,6 +16,6 @@ export class Memory {
     @OneToMany(() =>Color, color => color.memory)
     colors: Color[];
 
-    @ManyToOne(() => Product, product => product.memories)
+    @ManyToOne(() => Product, product => product.memories,{ cascade: true, onDelete: "CASCADE"})
     product: Product;
 }

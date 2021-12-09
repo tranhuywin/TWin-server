@@ -28,6 +28,21 @@ export class ColorService {
     return color;
   }
 
+  async findAll():Promise<Color[]> {
+    return await this.colorsRepository.find();
+  }
+  async findByMemory(idMemory: number):Promise<Color[]> {
+    const colors = await this.colorsRepository.find({
+      where: {
+        memory: idMemory,
+      },
+    });
+    if (!colors) {
+      throw new NotFoundException();
+    }
+    return colors;
+  }
+
   async update(id: number, updateColorDto: UpdateColorDto) {
     const updateData = await this.colorsRepository
             .createQueryBuilder()

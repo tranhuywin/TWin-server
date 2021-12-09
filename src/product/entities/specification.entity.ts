@@ -13,6 +13,6 @@ export class Specifications {
     @Column()
     value: string;
 
-    @ManyToOne(() => Product, product => product.specifications)
+    @ManyToOne(() => Product, product => product.specifications, { cascade: true, onDelete: "CASCADE"})
     product: Product;
 }
