@@ -15,7 +15,7 @@ export class ProductController {
         return this.productsService.create(createProductDto);
     }
 
-    @Get('/all')
+    @Get('/')
     getAll(): Promise<Product[]> {
         return this.productsService.getAll();
     }
