@@ -6,4 +6,11 @@ declare global {
     status: string;
     details?: string;
   }
+  interface IJwtPayload {
+    email: string;
+    id: number;
+    firstName: string;
+    lastName: string;
+    role: string;
+  }
 }

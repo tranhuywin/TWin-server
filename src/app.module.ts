@@ -8,9 +8,10 @@ import { ColorModule } from './color/color.module';
 import { MemoryModule } from './memory/memory.module';
 import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
+import AuthModule from './auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), ProductModule, UserModule, CloudinaryModule, ColorModule, MemoryModule, CartModule, OrderModule],
+  imports: [TypeOrmModule.forRoot(), ProductModule, UserModule, CloudinaryModule, ColorModule, MemoryModule, CartModule, OrderModule, AuthModule],
   controllers: [UserController],
 }) 
 export class AppModule {}
