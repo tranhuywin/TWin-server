@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { Role } from 'src/enum/role.enum';
 
 @Injectable()
 export class UserService {
@@ -31,6 +32,7 @@ export class UserService {
         const hash = await bcrypt.hash(password, saltOrRounds);
         createUser.password = hash;
         createUser.registerDate = new Date().toDateString();
+        createUser.email = createUser.email.toLowerCase();
 
         const user = new User();
         user.firstName = createUser.firstName;
@@ -38,6 +40,7 @@ export class UserService {
         user.email = createUser.email;
         user.password = createUser.password;
         user.registerDate = createUser.registerDate;
+        user.typeRole = Role.USER; // Warning: Don't change this value
 
         return await this.usersRepository.save(user);
     }
