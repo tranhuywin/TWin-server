@@ -1,5 +1,5 @@
 import { Color } from "src/color/entities/color.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Order } from "./order.entity";
 
 @Entity()
@@ -7,8 +7,7 @@ export class OrderItem {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(()=>Color, { cascade: true, onDelete: "CASCADE"})
-    @JoinColumn()
+    @ManyToOne(()=>Color, (color) => color.orderItems, { cascade: true, onDelete: "CASCADE" })
     color: Color;
 
     @ManyToOne(() => Order, (order) => order.orderItems, { cascade: true, onDelete: "CASCADE"})

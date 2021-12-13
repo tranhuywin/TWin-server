@@ -6,7 +6,7 @@ export class User {
   @PrimaryGeneratedColumn({ name: 'user_id' })
   id: number;
 
-  @Column({ name: 'first_name', default: 'jonny' })
+  @Column({ name: 'first_name' })
   firstName: string;
 
   @Column({ name: 'last_name' })
@@ -21,8 +21,8 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ name: 'type-role'}) 
-  typeRole: string; 
+  @Column({ name: 'role', default: 'user' })
+  typeRole: string;
 
   @OneToMany(() => Order, order => order.user)
   orders: Order[];

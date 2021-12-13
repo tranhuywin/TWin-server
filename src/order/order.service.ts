@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ColorService } from 'src/color/color.service';
+import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -14,12 +15,17 @@ export class OrderService {
     @InjectRepository(OrderItem)
     private readonly orderItemsRepository: Repository<OrderItem>,
     private readonly colorService: ColorService,
+    private readonly userService: UserService
   ) { }
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
+    //check user
+    const user = await this.userService.findOne(createOrderDto.userId);
+
     const order = await this.orderRepository.create(createOrderDto);
     order.createdAt = new Date();
     order.updatedAt = new Date();
+    order.user = user;
     const orderData = await this.orderRepository.save(order)
     //order items
     const orderItems = createOrderDto.orderItems.map(async item => {

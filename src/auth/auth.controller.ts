@@ -6,8 +6,10 @@ import {
 } from '@nestjs/common';
 import { LocalAuthGuard } from './guard/local-auth.guard';
 import { AuthService } from './auth.service';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
+@ApiTags("auth")
 export default class AppController {
   private authService: AuthService;
 

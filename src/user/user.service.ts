@@ -5,6 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { Role } from 'src/enum/role.enum';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -53,4 +54,11 @@ export class UserService {
         return this.usersRepository.findOne({ email });
     }
 
+    async update(id: number, userUpdateDto: UpdateUserDto){
+        return await this.usersRepository.update(id ,userUpdateDto);
+    }
+
+    async delete(id: number){
+        return await this.usersRepository.delete(id);
+    }
 }

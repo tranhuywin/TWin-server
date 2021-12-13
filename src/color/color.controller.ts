@@ -14,6 +14,11 @@ export class ColorController {
     return this.colorService.create(idMemory, createColorDto);
   }
 
+  @Get()
+  findAll() {
+    return this.colorService.findAll();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.colorService.findOne(+id);

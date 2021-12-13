@@ -1,6 +1,7 @@
 import { Memory } from 'src/memory/entities/memory.entity';
+import { OrderItem } from 'src/order/entities/orderItem.entity';
 import { Product } from 'src/product/entities/product.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity()
 export class Color {
@@ -27,4 +28,7 @@ export class Color {
 
     @ManyToOne(() => Product, product => product.colorAccessory, { cascade: true, onDelete: "CASCADE"})
     product: Product;
+
+    @OneToMany(() => OrderItem, (orderItem) => orderItem.color)
+    orderItems: OrderItem[];
 }

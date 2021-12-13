@@ -24,7 +24,7 @@ export class ColorService {
   async findOne(id: number):Promise<Color>  {
     const color = await this.colorsRepository.findOne(id);
     if(!color)
-      throw new NotFoundException();
+      throw new NotFoundException("Color not found");
     return color;
   }
 
@@ -38,7 +38,7 @@ export class ColorService {
       },
     });
     if (!colors) {
-      throw new NotFoundException();
+      throw new NotFoundException("No colors found");
     }
     return colors;
   }

@@ -1,12 +1,15 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
 import JwtAuthGuard from 'src/auth/guard/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guard/roles.guard';
 import { Role } from 'src/enum/role.enum';
 import { Roles } from 'src/decorator/roles.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('user')
+@ApiTags("user")
 export class UserController {
 	constructor(
 		private readonly userService: UserService,
@@ -29,12 +32,25 @@ export class UserController {
 	@Roles(Role.ADMIN, Role.SUB_ADMIN)
 	@UseGuards(JwtAuthGuard, RolesGuard)
 	@Get('/:id')
-	findOne(id: number) {
+	findOne(@Param('id') id: number) {
 		return this.userService.findOne(id);
 	}
 
-	@Post('/sign-up')
-	async signUp(@Body() user: CreateUserDto) {
+	@UseGuards(JwtAuthGuard)
+	@Patch()
+	update(@Request() req, @Body() userUpdateDto: UpdateUserDto) {
+		return this.userService.update(req.user.id, userUpdateDto)
+	}
+
+	@Roles(Role.ADMIN, Role.SUB_ADMIN)
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Delete('/:id')
+	delete(@Param('id') id: number) {
+		return this.userService.delete(id);
+	 }
+
+	@Post('/register')
+	async register(@Body() user: CreateUserDto) {
 		return await this.userService.create(user);
 	}
 }
