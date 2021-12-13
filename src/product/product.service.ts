@@ -70,6 +70,7 @@ export class ProductService {
                     color.HexRGB = colorofProduct.HexRGB;
                     color.price = colorofProduct.price;
                     color.marketPrice = colorofProduct.marketPrice;
+                    color.originalPrice = colorofProduct.originalPrice;
                     color.image = colorofProduct.image;
                     color.memory = memory;
                     colors.push(color);
@@ -84,6 +85,7 @@ export class ProductService {
                 color.HexRGB = colorofProduct.HexRGB;
                 color.price = colorofProduct.price;
                 color.marketPrice = colorofProduct.marketPrice;
+                color.originalPrice = colorofProduct.originalPrice;
                 color.image = colorofProduct.image;
                 color.product = product;
                 colors.push(color);

@@ -17,6 +17,7 @@ export class ColorController {
   @Get()
   findAll() {
     return this.colorService.findAll();
+
   }
 
   @Get(':id')

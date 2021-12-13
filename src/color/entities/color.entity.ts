@@ -18,6 +18,9 @@ export class Color {
     marketPrice: number;
 
     @Column()
+    originalPrice: number;
+
+    @Column()
     image: string;
 
     @Column()

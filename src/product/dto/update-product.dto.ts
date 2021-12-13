@@ -39,4 +39,10 @@ export class UpdateProductDto {
     @Min(0)
     @ApiProperty()
     marketPrice?: number;
+
+    @IsOptional()
+    @IsNumber()
+    @Min(0)
+    @ApiProperty()
+    originalPrice?: number;
 }

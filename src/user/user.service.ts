@@ -18,8 +18,25 @@ export class UserService {
         return this.usersRepository.find();
     }
 
+    async findAllAndOrder(): Promise<User[]> {
+        const user = await this.usersRepository.createQueryBuilder('user')
+        .leftJoinAndSelect('user.orders', 'orders')
+        .getMany();
+
+        return user;
+    }
+
     async findOne(id: number) {
         return this.usersRepository.findOne(id);
+    }
+
+    async findOneAndOrder(id: number): Promise<User>{
+        const user = await this.usersRepository.createQueryBuilder('user')
+        .leftJoinAndSelect('user.orders', 'orders')
+        .where('user.id = :id', { id })
+        .getOne();
+
+        return user;
     }
 
     async create(createUser: CreateUserDto): Promise<User> {

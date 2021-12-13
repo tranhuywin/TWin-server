@@ -17,6 +17,11 @@ export class CreateColorDto {
     marketPrice: number;
 
     @IsNumber()
+    @Min(0)
+    @ApiProperty()
+    originalPrice: number;
+
+    @IsNumber()
     @ApiProperty()
     @Min(0)
     quantity: number;

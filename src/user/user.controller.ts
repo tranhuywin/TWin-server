@@ -22,9 +22,22 @@ export class UserController {
 		return this.userService.findAll();
 	}
 
+	@Roles(Role.ADMIN, Role.SUB_ADMIN)
+	@UseGuards(JwtAuthGuard, RolesGuard)
+	@Get('all-and-order')
+	findAllAndOrder() {
+		return this.userService.findAllAndOrder();
+	}
+
 	@UseGuards(JwtAuthGuard)
 	@Get('/me')
 	async getMe(@Request() req) {
+		const { password, ...result } = req.user;
+		return result;
+	}
+	@UseGuards(JwtAuthGuard)
+	@Get('/me-and-order')
+	async getMeAndOrder(@Request() req) {
 		const { password, ...result } = req.user;
 		return result;
 	}
