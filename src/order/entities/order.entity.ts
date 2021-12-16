@@ -17,6 +17,12 @@ export class Order {
     status: number;
 
     @Column()
+    totalPrice: number;
+
+    @Column()
+    totalOriginalPrice: number;
+
+    @Column()
     phoneNumber: string;
 
     @Column("text")

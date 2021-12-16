@@ -192,6 +192,7 @@ export class ProductService {
                 return product;
         })
     }
+
     getMaxPrice(maxPrice: number, products: Product[]): Product[] {
         return products.filter(product => {
             if (product.price <= maxPrice)
