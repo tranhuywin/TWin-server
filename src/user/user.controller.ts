@@ -50,7 +50,7 @@ export class UserController {
 	}
 
 	@UseGuards(JwtAuthGuard)
-	@Patch()
+	@Patch('/me')
 	update(@Request() req, @Body() userUpdateDto: UpdateUserDto) {
 		return this.userService.update(req.user.id, userUpdateDto)
 	}
