@@ -1,5 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Req, BadRequestException } from '@nestjs/common';
-import { Response, Request } from 'express';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { ApiTags } from '@nestjs/swagger';
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
@@ -24,17 +24,16 @@ export class CartController {
     return this.cartService.addProduct(id, createCartItemDto);
   }
 
+  
+  @Get('/:id')
+  findOne(@Param('id') id: number): Promise<Cart> {
+    console.log(id);
+    return this.cartService.findOne(id);
+  }
+
   @Get('/all')
   findAll(): Promise<Cart[]> {
     return this.cartService.findAll();
-  }
-
-  @Get()
-  findOne(@Req() request: Request): Promise<Cart> {
-    if(request.cookies.cart_id) {
-      return this.cartService.findOne(request.cookies.cart_id);
-    }
-    throw new BadRequestException("No cart_id cookie found!");
   }
 
   @Patch(':id')
